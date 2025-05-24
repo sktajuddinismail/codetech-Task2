@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Real-Time Chat Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #f0f0f0;
+    }
+    header {
+      background: #007bff;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    #chat {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .message {
+      background: white;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      max-width: 70%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .you {
+      align-self: flex-end;
+      background: #dcf8c6;
+    }
+    .other {
+      align-self: flex-start;
+      background: #fff;
+    }
+    #inputArea {
+      display: flex;
+      padding: 10px;
+      background: white;
+      border-top: 1px solid #ccc;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Real-Time Chat (Simulated)</header>
+
+  <div id="chat"></div>
+
+  <div id="inputArea">
+    <input type="text" id="messageInput" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('messageInput');
+
+    function appendMessage(text, sender = 'you') {
+      const msg = document.createElement('div');
+      msg.className = 'message ' + sender;
+      msg.textContent = text;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function sendMessage() {
+      const text = input.value.trim();
+      if (text !== '') {
+        appendMessage(text, 'you');
+        input.value = '';
+
+        // Simulated server response
+        setTimeout(() => {
+          const reply = generateBotResponse(text);
+          appendMessage(reply, 'other');
+        }, 1000);
+      }
+    }
+
+    function generateBotResponse(userMsg) {
+      const lower = userMsg.toLowerCase();
+      if (lower.includes("hello") || lower.includes("hi")) {
+        return "Hi there! 👋 How can I help you?";
+      } else if (lower.includes("help")) {
+        return "Sure! I'm here to help. Ask me anything.";
+      } else if (lower.includes("bye")) {
+        return "Goodbye! 👋 Have a great day.";
+      } else if (lower.includes("learning")){
+        return "There are some resources like:Youtube,Greeks for Geeks,Google"
+      
+      } else {
+        return "You said: " + userMsg;
+      }
+    }
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
+
+</body>
+</html>
